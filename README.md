@@ -9,3 +9,13 @@ This was a personal project, and work with the entity that was originally intere
 * Using a similar test "game" which contains tasks that can be reasonably considered easy, somewhat difficult, and very difficult for the majority of people, have each individual seated at their workstations complete the game to calibrate the program during the ~20 minute training period. You now have each individual's unique metrics at each of the three difficulty levels.
 * Once the program is calibrated, have each idividual perform each of the potential tasks while the program runs in the background, monitoring their levels of focus.
 * Compare results. Say Angela, Dwight, and Jim perform task X with little effort as evidenced by the program predicting their metrics during this task as most similar to those collected during the "easy" task at test time, while the rest of the workforce was predicted to have struggled somewhat. Perhaps assigning this job to Angela, Dwight, and Jim would result in higher productivity and fewer mistakes. Each task can be assigned their ideal teams.
+
+# Function/File Descriptions
+* **Results:** An excel workbook containing the results from 10 trials on each participant. 40 participants total.
+* **aMain:** The main program file. All helper functions are called here. Some data parsing/feature engineering takes place in this program file but the majority is handled through smaller functions.
+* **createTrainSet:** A function used in order to parse the data into three distinct training sets so that labels may be added. Sets are later combined back into on single training set with the appropriate labels. Also works for test sets.
+* **data:** Contains data from all participants.
+* **fmincg:** An optimization function using the conjugate gradient method. Used to minimize theta values given by a cost function's gradients.
+* **nnCostFunction:** The cost function for the neural network. Performs both forward propagation steps to compute the cost as well as the backwards propagation step in order to compute the gradients.
+* **predict:** Used to run predictions on the test set once the optimum parameters for the neural network have been determined
+
