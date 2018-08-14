@@ -6,19 +6,19 @@ format short;
 pupil_diameter = data.pupil_diameter;
 difficulty_label= data.difficulty_label;
 time = data.time;
+
 %% Load specific candidate data 
 results = [zeros(40,1)];
 % For an iteration over each candidate, replace "iteration = 1" with "1:40"
 for iteration = 1
 id = iteration; % possible values 1 to 40
-
     pd = pupil_diameter{id};
     dl= difficulty_label{id};
     t = time{id};
     fprintf('Current candidate id: %d\n\n', id)  
+    
 %% Give info on candidate's data set 
 fprintf('Number of data points: %d\n', size(pd,1))
-
 % Counting the number of output training examples and their positions in
 % the vector. 
 y_label_1 = 0; pos1 = 0;
@@ -55,8 +55,8 @@ fprintf('There are %d y=2 outputs. The first y=2 output occurs at %d\n', ...
     y_label_2, pos2)  
 fprintf('There are %d y=3 outputs. The first y=3 output occurs at %d\n', ...
     y_label_3, pos3)
+    
 %% Turn the outputs and inputs into X and y matrices 
-
 X1 = pd(pos1:(pos1+y_label_1-1)); 
 y1 = dl(pos1:(pos1+y_label_1-1)); 
 X2 = pd(pos2:(pos2+y_label_2-1));
@@ -68,8 +68,8 @@ X= [X1;X2;X3];
 y = [y1;y2;y3];
 Xy = [X,y];
 %% (PLOT) Visualizing some possible features 
+% Set run = 1 in order to generate the plot
 run = 0;
-
 if run == 1
     x_axis = [1:1:size(y)];
 
@@ -93,11 +93,12 @@ if run == 1
 end
 %% ** REMARK 1 
  % I may be good to throw out the outliers. It's unlikely that a rapid
- % change in cognitive difficulty occured to cause spikes, so a tighter
- % range might be good...
+ % change in cognitive difficulty occured to cause spikes, and even if 
+ % this was the case we are only concerned with a sustained cognitive
+ % state, so a tighter range might be good... 
+ 
 %% (PLOT) Remove outliers 
 [ X1_NO , X2_NO , X3_NO ] = remove_outliers( X1, X2, X3 );
-
 X_NO = [X1_NO;X2_NO;X3_NO];
 x_axis = [1:1:size(X_NO)];
 
@@ -118,14 +119,21 @@ end
 
 %% ** REMARK 2
     % One thing that sticks out to my quite a bit with the outliers thrown
-    % away are the upper and lower bounds of each difficulty level... Let's
-    % see what those are
+    % away are the distinct upper and lower bounds of each difficulty level... 
+    % Let's see what those are
+    
 %% (TABLE) Determining upper and lower bounds of the data set
-run = 1;
 
+run = 1;
 if run == 0
+    % Set s to some point in the dataset that you'd like to observe.
+    % This comes into play later in this run sequence, since I am
+    # interested in comparing the upper and lower bounds of the 
+    # whole dataset to the upper and lower bounds of some small
+    # slice of the dataset. 
     s = 3428; % sample size start
     ss = s+150; % sample size finish
+    
     fprintf('Over all samples');
     fprintf('\n\t\tMax\t\t\t\tMin\t\t\t\tMedian\n')
     mid1 = ((max(X1_NO) + min(X1_NO))/2)*1000;
@@ -134,6 +142,7 @@ if run == 0
     fprintf('X1\t%5d\t%5d\t%5d\n', max(X1_NO),min(X1_NO),mid1) 
     fprintf('X2\t%5d\t%5d\t%5d\n', max(X2_NO), min(X2_NO),mid2)
     fprintf('X3\t%5d\t%5d\t%5d\n', max(X3_NO), min(X3_NO),mid3)
+    
     fprintf('\nOver 150 samples:')
     fprintf('\n\t\tMax\t\t\t\tMin\t\t\t\tMedian\n')
     mid1b = ((max(X1_NO(s:ss))) + min(X1_NO(s:ss)))/2*1000;
@@ -143,8 +152,13 @@ if run == 0
     fprintf('X2\t%5d\t%5d\t%5d\n', max(X2_NO(s:ss)), min(X2_NO(s:ss)),mid2b)
     fprintf('X3\t%5d\t%5d\t%5d\n', max(X3_NO(s:ss)), min(X3_NO(s:ss)),mid3b)
 end
-%% Splitting into a training set and a test set
 
+%% ** REMARK 3
+    % The results here look good. The upper and lower bounds of each
+    % dataset (X1, X2, and X3) are typically quite distinct. This 
+    % distinction persists in small slices of the data as well.
+
+%% Splitting non-outlier sets into a training set and a test set
 X1_train = X1_NO(1:floor(0.6*(size(X1_NO,1))));
 X2_train = X2_NO(1:floor(0.6*(size(X2_NO,1))));
 X3_train = X3_NO(1:floor(0.6*(size(X3_NO,1))));
@@ -152,10 +166,7 @@ X3_train = X3_NO(1:floor(0.6*(size(X3_NO,1))));
 X1_test = X1_NO(floor(0.6*(size(X1_NO,1)))+1:end);
 X2_test = X2_NO(floor(0.6*(size(X2_NO,1)))+1:end);
 X3_test = X3_NO(floor(0.6*(size(X3_NO,1)))+1:end);
-%% ** REMARK 3
-% For future tests I should probably not use pre-cleaned data on the test
-% set, instead building a scrubber into the algorithm itself to determine
-% whether or not a point is an outlier by its z value
+
 %% (PLOT) Finally, build the features from the training set's values...
 
 sample_size = 150;
@@ -170,10 +181,12 @@ legend('y=1','y=2','y=3')
 
 %% ** REMARK 4
 % As can be seen from the plot, the boundaries are very distinct and a
-% simple logistic regression classifier should suffice to create boundaries
+% simple logistic regression classifier should suffice to create boundaries.
+% Nonetheless, for practice I'll develop a neural network to handle this.
+
 %% Setting up the actual training sets using the previously found features
 
-% first build one training set
+% first build one training set, append a column of ones for the bias node
 ts1 = [ts1,ones(size(ts1,1),1)];
 ts2 = [ts2,ones(size(ts2,1),1).*2];
 ts3 = [ts3,ones(size(ts3,1),1).*3];
@@ -184,40 +197,47 @@ trainset = trainset(:,1:2);
 trainset = trainset.*1000;
 trainset = trainset.^6;
 trainset = trainset./1000;
-%% Setting neural network params
 
+%% Setting neural network params
 % i = input layer size
 % h1 = first hidden layer size
+% o = output layer size
 
 i = size(trainset,2); % Since the columns in trainset represent features
 h1 = 2; % not including the bias node
 o = 3; % number of output layer nodes
 
+% Randomly initializing Theta arrays
 Theta1 = randInitializeWeights(i,h1);
 Theta2 = randInitializeWeights(h1,o);
 nn_params = [Theta1(:); Theta2(:)];
 initial_nn_params = nn_params;
 
+% No regularization for now
 lambda = 0;
+
+% Uncomment the next two lines if you'd like to save the training set and its labels
 % csvwrite('trainset.csv',trainset)
 % csvwrite('y.csv',y)
+
+% Producing the cost function and the gradient. This function is sent to an optimization
+% function in order to minimize the cost
 [J, grad] = nnCostFunction(nn_params, i, h1, o, trainset, y, lambda);
 
 options = optimset('MaxIter', 50);
 
-% Create "short hand" for the cost function to be minimized
+% Create "short hand" for the cost function to be minimized. Want to minimize J by
+% minimizing the Theta arrays, so point to the theta argument
 costFunction = @(p) nnCostFunction(p, i, h1, o, trainset, y, lambda );
 
 % Now, costFunction is a function that takes in only one argument (the
-% neural network parameters)
+% neural network parameters). The output of interest after optmization are
+% the optimized Theta values
 [nn_params, cost] = fmincg(costFunction, initial_nn_params, options);
 
-%% TESTING
+%% Testing accuracy on test set
 Theta1 = reshape(nn_params(1:h1*(i + 1)),h1, (i + 1));
 Theta2 = reshape(nn_params((1 + (h1 * (i + 1))):end),o, (h1 + 1));
-
-
-
 [ts1, ts2, ts3] = createTrainSet( sample_size, features, X1_test, ...
                                             X2_test, X3_test );
 
@@ -237,7 +257,7 @@ test = test./1000;
 % csvwrite('testset.csv',test)
 % csvwrite('ytest.csv',y_test)
 
-
+% The actual testing step to display accuracy
 [p,a2,a3] = predict(Theta1, Theta2, test );
 p_train = predict(Theta1, Theta2, trainset);
 score = zeros(size(p));
@@ -251,5 +271,7 @@ acc = (sum(score)/m)*100;
 fprintf('Accuracy: %0.2f%c\n', acc,'%') 
 results(iteration,1) = acc;
 end
+
+% Show the results of each run
 results;
 
