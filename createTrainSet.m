@@ -22,6 +22,6 @@ X3 = reshape(X3(1:stop3*s),stop3,s);
 ts1 = [max(X1,[],2), min(X1,[],2)];
 ts2 = [max(X2,[],2), min(X2,[],2)];
 ts3 = [max(X3,[],2), min(X3,[],2)];
-% take the min and max in each row and use em as your two features
+% take the min and max in each row and use them as your two features
 end
 
