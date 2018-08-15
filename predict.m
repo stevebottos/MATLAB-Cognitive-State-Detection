@@ -1,5 +1,4 @@
 function [p,a2,a3] = predict(Theta1, Theta2, X)
-%PREDICT Predict the label of an input given a trained neural network
 %   p = PREDICT(Theta1, Theta2, X) outputs the predicted label of X given the
 %   trained weights of a neural network (Theta1, Theta2)
 
@@ -20,8 +19,6 @@ for i = 1:size(p,1)
     [num,pos] = max(a3(i,:),[],2);
     p(i) = possibilities(pos);
 end
-
-% =========================================================================
 
 
 end
