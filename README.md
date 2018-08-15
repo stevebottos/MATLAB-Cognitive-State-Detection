@@ -17,5 +17,9 @@ This was a personal project, and work with the entity that was originally intere
 * **data:** Contains data from all participants.
 * **fmincg:** An optimization function using the conjugate gradient method. Used to minimize theta values given by a cost function's gradients.
 * **nnCostFunction:** The cost function for the neural network. Performs both forward propagation steps to compute the cost as well as the backwards propagation step in order to compute the gradients.
-* **predict:** Used to run predictions on the test set once the optimum parameters for the neural network have been determined
+* **predict:** Used to run predictions on the test set once the optimum parameters for the neural network have been determined.
+* **randInitializeWeights:** This is required to randomly initialize the Theta parameters prior to training, to avoid symmetry.
+* **remove_outliers:** A short function which detects outliers from the data and removes them.
+* **sigmoid:** The activation function in each node of the hidden layers and output layer of the network. 
+* **sigmoidGradient:** Used in "nnCostFunction" in order to compute the gradients of the weights for optimization.
 
