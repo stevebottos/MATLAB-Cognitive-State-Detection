@@ -1,12 +1,13 @@
 ## A Quick Note
 This code was developed by me as a kind of side project which served two purposes (besides of course obtaining some form of result): /br
-1) Gain some experience with writing Neural Networks in Matlab/br
-2) Considering I am already confident in my ability to produce code for Neural Networks in Matlab that works properly, but at the time was not as comfortable with developing in a Python environment, I wanted to use this as the "base code" and re-write the whole thing in Python. You can find the Python code in my PYTHON-Cognitive-State-Detection repository. /br/br
+1) Gain some experience with writing Neural Networks in Matlab
+2) Considering I am already confident in my ability to produce code for Neural Networks in Matlab that works properly, but at the time was not as comfortable with developing in a Python environment, I wanted to use this as the "base code" and re-write the whole thing in Python. You can find the Python code in my PYTHON-Cognitive-State-Detection repository.
 
-Considering that this particular code is not intended for serious use, and considering that I was developing on some not-so-stellar hardware at the time and neede to train the algorithm 40x9 times (40 individuals to learn on, tabulating results from 9 training sessions to ensure consistency), I limited the number of iterations during the training sequence to 100 **(the Python Neural Network was also subject to these constraints)**. This was enough time to train the network on some datasets, whereas in others it was not. Some things to keep in mind:/br
+Considering that this particular code is not intended for serious use, and considering that I was developing on some not-so-stellar hardware at the time and neede to train the algorithm 40x9 times (40 individuals to learn on, tabulating results from 9 training sessions to ensure consistency), I limited the number of iterations during the training sequence to 100 **(the Python Neural Network was also subject to these constraints)**. This was enough time to train the network on some datasets, whereas in others it was not. Some things to keep in mind:
 * Some data grouped into linearly seperable classes. In these cases, 100% (or close) accuracy should be expected.
 * Some data was much more messy, the test accuracies for these cases are expected to be relatively low because either the 100 iteration training period was not enough time for the optimization function to converge, or simply because the data was too messy to learn on
-* Some data was very poor and for these test accuracy should be expected to be low, a longer training session may not fix this./br/br
+* Some data was very poor and for these test accuracy should be expected to be low, a longer training session may not fix this.
+
 **To see how the Neural Network performs after a sufficiently timed training session, see the test accuracies listed in the TENSORFLOW-Cognitive-State-Detection repository.**
 
 # Introduction
