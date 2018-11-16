@@ -1,5 +1,5 @@
 ## A Quick Note
-This code was developed by me as a kind of side project which served two purposes (besides of course obtaining some form of result): /br
+This code was developed by me as a kind of side project which served two purposes (besides of course obtaining some form of result):
 1) Gain some experience with writing Neural Networks in Matlab
 2) Considering I am already confident in my ability to produce code for Neural Networks in Matlab that works properly, but at the time was not as comfortable with developing in a Python environment, I wanted to use this as the "base code" and re-write the whole thing in Python. You can find the Python code in my PYTHON-Cognitive-State-Detection repository.
 
