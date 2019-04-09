@@ -23,7 +23,7 @@ This was a personal project, and work with the entity that was originally intere
 * Compare results. Say Angela, Dwight, and Jim perform task X with little effort as evidenced by the program predicting their metrics during this task as most similar to those collected during the "easy" task at test time, while the rest of the workforce was predicted to have struggled somewhat. Perhaps assigning this job to Angela, Dwight, and Jim would result in higher productivity and fewer mistakes. Each task can be assigned their ideal teams.
 
 # Function/File Descriptions
-* **Results:** An excel workbook containing the results from 10 trials on each participant. 40 participants total.
+* **MatlabResults:** A csv containing the results from 10 trials on each participant. 40 participants total.
 * **aMain:** The main program file. All helper functions are called here. Some data parsing/feature engineering takes place in this program file but the majority is handled through smaller functions.
 * **createTrainSet:** A function used in order to parse the data into three distinct training sets so that labels may be added. Sets are later combined back into on single training set with the appropriate labels. Also works for test sets.
 * **data:** Contains data from all participants.
